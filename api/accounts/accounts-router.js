@@ -17,20 +17,39 @@ router.get('/:id', checkAccountId, async (req, res) => {
   res.status(200).json(req.post)
 })
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAccountPayload, checkAccountNameUnique, async (req, res, next) => {
   // DO YOUR MAGIC
+  try {
+    const newAccount = await Account.create(req.body)
+    res.status(201).json(newAccount)
+  } catch (err) {
+    next(err)
+  }
 })
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id', checkAccountPayload, checkAccountNameUnique, checkAccountId, async (req, res, next) => {
   // DO YOUR MAGIC
+  try {
+    const updatedAccount = await Account.updateById()
+    res.json(updatedAccount)
+  } catch (err) {
+    next(err)
+  }
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', checkAccountId, async (req, res, next) => {
   // DO YOUR MAGIC
+  try {
+    const deletedAccount = await Account.deleteById(req.params.id)
+    res.json(deletedAccount)
+  } catch (err) {
+    next(err)
+  }
 })
 
 router.use((err, req, res, next) => { // eslint-disable-line
   // DO YOUR MAGIC
+  res.status(500).json({ message: err.message, stack: err.stack })
 })
 
 module.exports = router;
