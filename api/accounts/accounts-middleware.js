@@ -3,11 +3,11 @@ const Account = require('../accounts/accounts-model');
 function checkAccountPayload(req, res, next) {
   // DO YOUR MAGIC
   const { name, budget } = req.body;
-  if(name.trim() || budget === null ) {
+  if(name === null || budget === null ) {
     res.status(400).json({ message: "name and budget are required" })
-  } else if (typeof name.trim() !== "string") { 
+  } else if (typeof name !== "string") { 
     res.status(400).json({ message: "name of account must be a string" })
-  } else if (name.trim().length < 3 || name.trim().length > 100) {
+  } else if (name.length < 3 || name.length > 100) {
     res.status(400).json({ message: "name of account must be between 3 and 100" })
   } else if (isNaN(budget) || typeof budget !== "number") {
     res.status(400).json({ message: "budget of account must be a number" })
@@ -20,7 +20,7 @@ function checkAccountPayload(req, res, next) {
 
 async function checkAccountNameUnique(req, res, next) {
   // DO YOUR MAGIC
-  const accountName = req.params.name.trim();
+  const accountName = req.params.name;
   const account = await Account.getUniqueName(accountName)
   if (account) {
     res.status(400).json({ message: "that name is taken" })

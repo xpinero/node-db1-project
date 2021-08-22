@@ -14,7 +14,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', checkAccountId, async (req, res) => {
   // DO YOUR MAGIC
-  res.status(200).json(req.post)
+  res.status(200).json(req.account)
 })
 
 router.post('/', checkAccountPayload, checkAccountNameUnique, async (req, res, next) => {
